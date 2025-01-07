@@ -34,7 +34,7 @@ const getItems = (req, res) => {
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
 
-  ClothingItem.findByIdAndRemove(itemId)
+  ClothingItem.findByIdAndDelete(itemId)
   .orFail(() => {
     const error = new Error('Item not found');
     error.statusCode = 404;
