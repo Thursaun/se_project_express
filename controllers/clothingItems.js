@@ -20,11 +20,6 @@ const createItem = (req, res) => {
     return res.status(400).send({ message: 'Invalid weather type' });
   }
 
-  const urlRegex = /^(https?:\/\/).+/;
-  if (!urlRegex.test(imageUrl)) {
-    return res.status(400).send({ message: 'Invalid image URL' });
-  }
-
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id, })
   .then((item) => res.status(201).send({ data: item }))
   .catch((err) => handleError(err, res));
@@ -33,7 +28,7 @@ const createItem = (req, res) => {
 const getItems = (req, res) => {
   ClothingItem.find({})
   .then((items) => res.status(200).send({data: items}))
-  .catch((err) => { handleError(err, res) });
+  .catch((err) => handleError(err, res));
 };
 
 const deleteItem = (req, res) => {
@@ -46,8 +41,8 @@ const deleteItem = (req, res) => {
     throw error;
   })
   .then(() => res.status(200).send({message: 'Item deleted successfully'}))
-  .catch((err) => { handleError(err, res) });
-}
+  .catch((err) => handleError(err, res));
+};
 
 const likeItem = (req, res) => {
   ClothingItem.findByIdAndUpdate(
@@ -60,8 +55,8 @@ const likeItem = (req, res) => {
     throw error;
   })
   .then((item) => res.status(200).send({data: item}))
-  .catch((err) => { handleError(err, res) });
-}
+  .catch((err) => handleError(err, res));
+};
 
 const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
   req.params.itemId,
@@ -73,8 +68,8 @@ const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
     throw error;
   })
   .then((item) => res.status(200).send({data: item}))
-  .catch((err) => { handleError(err, res) });
-}
+  .catch((err) => handleError(err, res));
+};
 
 module.exports = { createItem, getItems, likeItem, dislikeItem, deleteItem};
 
