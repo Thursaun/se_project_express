@@ -9,10 +9,6 @@ const createItem = (req, res) => {
     return res.status(401).send({ message: 'User not authenticated'});
   }
 
-  if(!name || !weather || !imageUrl) {
-    return res.status(400).send({ message: 'All fields are required'});
-  }
-
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id, })
   .then((item) => res.status(201).send({ data: item }))
   .catch((err) => handleError(err, res));
