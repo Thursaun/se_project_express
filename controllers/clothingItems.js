@@ -1,12 +1,28 @@
-/* eslint-disable consistent-return */
 const ClothingItem = require('../models/clothingItem');
 const handleError = require('../utils/errors');
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
-  if(!req.user || !req.user._id) {
-    return res.status(401).send({ message: 'User not authenticated'});
+  if (!req.user || !req.user._id) {
+    return res.status(401).send({ message: 'User not authenticated' });
+  }
+
+  if (!name || !weather || !imageUrl) {
+    return res.status(400).send({ message: 'All fields are required' });
+  }
+
+  if (name.length < 2 || name.length > 30) {
+    return res.status(400).send({ message: 'Name must be between 2 and 30 characters' });
+  }
+
+  if (!['hot', 'warm', 'cold'].includes(weather)) {
+    return res.status(400).send({ message: 'Invalid weather type' });
+  }
+
+  const urlRegex = /^(https?:\/\/).+/;
+  if (!urlRegex.test(imageUrl)) {
+    return res.status(400).send({ message: 'Invalid image URL' });
   }
 
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id, })
