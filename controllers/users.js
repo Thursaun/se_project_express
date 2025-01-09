@@ -4,10 +4,7 @@ const handleError = require('../utils/errors');
 const getUsers = (req, res) => {
   User.find({})
   .then((users) => res.status(200).send(users))
-  .catch((err) => {
-    console.error(err);
-    return res.status(500).send({ message: err.message})
-  });
+  .catch((err) => handleError(err, res));
 };
 
 const createUser = (req, res) => {

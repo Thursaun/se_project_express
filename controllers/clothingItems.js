@@ -1,5 +1,5 @@
 const ClothingItem = require('../models/clothingItem');
-const handleError = require('../utils/errors');
+const { handleError, BAD_REQUEST, NOT_FOUND } = require('../utils/errors');
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
@@ -9,15 +9,11 @@ const createItem = (req, res) => {
   }
 
   if (!name || !weather || !imageUrl) {
-    return res.status(400).send({ message: 'All fields are required' });
-  }
-
-  if (name.length < 2 || name.length > 30) {
-    return res.status(400).send({ message: 'Name must be between 2 and 30 characters' });
+    return res.status(BAD_REQUEST).send({ message: 'All fields are required' });
   }
 
   if (!['hot', 'warm', 'cold'].includes(weather)) {
-    return res.status(400).send({ message: 'Invalid weather type' });
+    return res.status(BAD_REQUEST).send({ message: 'Invalid weather type' });
   }
 
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id, })
@@ -37,7 +33,7 @@ const deleteItem = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
   .orFail(() => {
     const error = new Error('Item not found');
-    error.statusCode = 404;
+    error.statusCode = NOT_FOUND;
     throw error;
   })
   .then(() => res.status(200).send({message: 'Item deleted successfully'}))
@@ -51,7 +47,7 @@ const likeItem = (req, res) => {
   { new: true },)
   .orFail(() => {
     const error = new Error('Item not found');
-    error.statusCode = 404;
+    error.statusCode = NOT_FOUND;
     throw error;
   })
   .then((item) => res.status(200).send({data: item}))
@@ -64,7 +60,7 @@ const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
   { new: true, runValidators: true },)
   .orFail(() => {
     const error = new Error('Item not found');
-    error.statusCode = 404;
+    error.statusCode = NOT_FOUND;
     throw error;
   })
   .then((item) => res.status(200).send({data: item}))
