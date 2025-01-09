@@ -34,11 +34,15 @@ const deleteItem = (req, res) => {
   ClothingItem.findByIdAndDelete(itemId)
   .orFail(() => {
     const error = new Error('Item not found');
+    error.name = 'DocumentNotFoundError';
     error.statusCode = NOT_FOUND;
+    console.log("Error caught in orFail");
     throw error;
   })
   .then(() => res.status(200).send({message: 'Item deleted successfully'}))
-  .catch((err) => handleError(err, res));
+  .catch((err) => {
+    console.log("Error caught in catch");
+    handleError(err, res)});
 };
 
 const likeItem = (req, res) => {
@@ -48,11 +52,14 @@ const likeItem = (req, res) => {
   { new: true },)
   .orFail(() => {
     const error = new Error('Item not found');
+    error.name = 'DocumentNotFoundError';
     error.statusCode = NOT_FOUND;
     throw error;
   })
   .then((item) => res.status(200).send({data: item}))
-  .catch((err) => handleError(err, res));
+  .catch((err) => {
+    console.log("Error caught in catch");
+    handleError(err, res)});
 };
 
 const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
@@ -61,6 +68,7 @@ const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
   { new: true, runValidators: true },)
   .orFail(() => {
     const error = new Error('Item not found');
+    error.name = 'DocumentNotFoundError';
     error.statusCode = NOT_FOUND;
     throw error;
   })

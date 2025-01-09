@@ -22,6 +22,7 @@ const getUser = (req, res) => {
   User.findById(userId)
   .orFail(() => {
     const error = new Error('User not found');
+    error.name = 'DocumentNotFoundError';
     error.statusCode = NOT_FOUND;
     throw error;
   })
