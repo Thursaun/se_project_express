@@ -1,7 +1,6 @@
 const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require('./constants');
 
 const handleError = (err, res) => {
-  console.error(err);
   if (err.name === "ValidationError") {
     return res.status(BAD_REQUEST).send({ message: 'Validation failed. Check input fields.'});
   }

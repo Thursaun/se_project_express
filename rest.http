@@ -45,12 +45,12 @@ content-type: application/json
 ###
 
 
-DELETE http://localhost:3001/items/text/likes  HTTP/1.1
+DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes  HTTP/1.1
 content-type: application/json
 
 
 ###
 
 
-DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8   HTTP/1.1
+DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes HTTP/1.1
 content-type: application/json

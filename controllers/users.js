@@ -4,7 +4,7 @@ const handleError = require('../utils/errors');
 
 const getUsers = (req, res) => {
   User.find({})
-  .then((users) => res.status(200).send(users))
+  .then((users) => res.send(users))
   .catch((err) => handleError(err, res));
 };
 
@@ -12,7 +12,7 @@ const createUser = (req, res) => {
   const {name, avatar} = req.body;
 
   User.create({ name, avatar })
-  .then((user) => res.status(201).send(user))
+  .then((user) => res.send(user))
   .catch((err) => handleError(err, res));
 };
 
@@ -26,7 +26,7 @@ const getUser = (req, res) => {
     error.statusCode = NOT_FOUND;
     throw error;
   })
-  .then((user) => res.status(200).send(user))
+  .then((user) => res.send(user))
   .catch((err) => handleError(err, res));
 }
 
