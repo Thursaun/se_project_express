@@ -23,7 +23,7 @@ content-type: application/json
 {
   "name": "Winter Jacket",
   "weather": "cold",
-  "imageUrl": "example"
+  "imageUrl": "https://example.com/winter-jacket.jpg"
 }
 
 ###
@@ -41,5 +41,5 @@ content-type: application/json
 ###
 
 
-DELETE http://localhost:3001/items/677d790f31668b094689607b HTTP/1.1
+DELETE http://localhost:3001/items/677d9694b053726e3ef5798e HTTP/1.1
 content-type: application/json
