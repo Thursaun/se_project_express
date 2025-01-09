@@ -1,0 +1,45 @@
+GET http://localhost:3001/items HTTP/1.1
+
+###
+
+GET http://localhost:3001/users HTTP/1.1
+
+###
+
+POST http://localhost:3001/users HTTP/1.1
+content-type: application/json
+
+{
+    "name": "sample",
+    "avatar": "https://thisisnotvalidurl"
+}
+
+###
+
+
+POST http://localhost:3001/items HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Winter Jacket",
+  "weather": "cold",
+  "imageUrl": "example"
+}
+
+###
+
+
+PUT http://localhost:3001/items/text/likes HTTP/1.1
+content-type: application/json
+
+{
+  "name": "Winter Jacket",
+  "weather": "cold",
+  "imageUrl": "https://example.com/winter-jacket.jpg"
+}
+
+###
+
+
+DELETE http://localhost:3001/items/677d790f31668b094689607b HTTP/1.1
+content-type: application/json
