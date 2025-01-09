@@ -1,6 +1,4 @@
-const BAD_REQUEST = 400;
-const NOT_FOUND = 404;
-const DEFAULT = 500;
+const { BAD_REQUEST, NOT_FOUND, DEFAULT } = require('./constants');
 
 const handleError = (err, res) => {
 
@@ -17,5 +15,4 @@ const handleError = (err, res) => {
   return res.status(DEFAULT).send({ message: 'Internal server error'})
 };
 
-
-module.exports = { handleError, BAD_REQUEST, NOT_FOUND, DEFAULT };
+module.exports = handleError;
