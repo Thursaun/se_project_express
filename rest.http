@@ -7,7 +7,7 @@ GET http://localhost:3001/users HTTP/1.1
 ###
 
 
-GET http://localhost:3001/users/invalid-fake-user-id  HTTP/1.1
+GET http://localhost:3001/users/61eade4c6d5acf558c42d9b8  HTTP/1.1
 
 ###
 
@@ -15,12 +15,11 @@ POST http://localhost:3001/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "s",
+    "name": "Test1",
     "avatar": "https://example.com/av.bmp"
 }
 
 ###
-
 
 POST http://localhost:3001/items HTTP/1.1
 content-type: application/json
@@ -46,5 +45,12 @@ content-type: application/json
 ###
 
 
-DELETE http://localhost:3001/items/677d9694b053726e3ef5798e HTTP/1.1
+DELETE http://localhost:3001/items/text/likes  HTTP/1.1
+content-type: application/json
+
+
+###
+
+
+DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8   HTTP/1.1
 content-type: application/json
