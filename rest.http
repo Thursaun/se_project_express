@@ -16,7 +16,7 @@ content-type: application/json
 
 {
     "name": "Test1",
-    "avatar": "https://example.com/av.bmp"
+    "avatar": "https://example"
 }
 
 ###
@@ -25,7 +25,7 @@ POST http://localhost:3001/items HTTP/1.1
 content-type: application/json
 
 {
-  "name": "Winter Jacket",
+  "name": "W",
   "weather": "cold",
   "imageUrl": "https://example.com/winter-jacket.jpg"
 }
