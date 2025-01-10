@@ -7,7 +7,7 @@ GET http://localhost:3001/users HTTP/1.1
 ###
 
 
-GET http://localhost:3001/users/61eade4c6d5acf558c42d9b8  HTTP/1.1
+GET http://localhost:3001/users/6780473a86ae15c067f8584b  HTTP/1.1
 
 ###
 
@@ -15,8 +15,8 @@ POST http://localhost:3001/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Test1",
-    "avatar": "https://example"
+    "name": "Jessica Vanessa",
+    "avatar": "https://example.com/pops"
 }
 
 ###
@@ -33,7 +33,7 @@ content-type: application/json
 ###
 
 
-PUT http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes  HTTP/1.1
+PUT http://localhost:3001/items/67803d3186ae15c067f85840/likes  HTTP/1.1
 content-type: application/json
 
 {
@@ -45,12 +45,12 @@ content-type: application/json
 ###
 
 
-DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes  HTTP/1.1
+DELETE http://localhost:3001/items/6780077d1b3577d09ec7d4d2/likes  HTTP/1.1
 content-type: application/json
 
 
 ###
 
 
-DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes HTTP/1.1
+DELETE http://localhost:3001/items/67803d3186ae15c067f85840/ HTTP/1.1
 content-type: application/json
