@@ -1,3 +1,17 @@
+
+GET http://localhost:3001/signup HTTP/1.1
+
+###
+
+GET http://localhost:3001/signin HTTP/1.1
+
+{
+    "email": "HarryPotter@gmail.com",
+    "password": "HedwigForever",
+}
+
+###
+
 GET http://localhost:3001/items HTTP/1.1
 
 ###
@@ -16,7 +30,9 @@ content-type: application/json
 
 {
     "name": "Jessica Vanessa",
-    "avatar": "https://example.com/pops"
+    "avatar": "https://example.com/pops",
+    "email": "HarryPotter@gmail.com",
+    "password": "HedwigForever",
 }
 
 ###

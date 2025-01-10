@@ -1,4 +1,4 @@
-const { BAD_REQUEST, NOT_FOUND, DEFAULT, ERROR_MESSAGES} = require('./constants');
+const { BAD_REQUEST, NOT_FOUND, DEFAULT, ERROR_MESSAGES, CONFLICT} = require('./config');
 
 const handleError = (err, res) => {
   console.error('Error:', err.name, '| Message:', err.message);
@@ -11,6 +11,9 @@ const handleError = (err, res) => {
   }
   if (err.name === "CastError") {
     return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_ID_FORMAT});
+  }
+  if (err.name === 11000) {
+    return res.status(CONFLICT).send({ message: ERROR_MESSAGES.CONFLICT});
   }
   return res.status(DEFAULT).send({ message: ERROR_MESSAGES.INTERNAL_SERVER_ERROR});
 };

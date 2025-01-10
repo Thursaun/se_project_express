@@ -24,5 +24,6 @@ module.exports = {
     'no-console': ["warn" , { allow: [ "log", "error", "warn" ] }],
     'no-underscore-dangle': [ 'error', {allow: ['_id'] }],
     'consistent-return': 'off',
+    "import/no-extraneous-dependencies": ["error", {"dependencies": ["**/*.test.js", "**/*.spec.js"]}],
   },
 };
