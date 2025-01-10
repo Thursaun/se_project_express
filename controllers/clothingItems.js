@@ -1,19 +1,21 @@
 const ClothingItem = require('../models/clothingItem');
-const { handleError, BAD_REQUEST, NOT_FOUND } = require('../utils/errors');
+const { UNAUTHORIZED, ERROR_MESSAGES, BAD_REQUEST, NOT_FOUND } = require('../utils/constants');
+const handleError = require('../utils/errors');
+
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!req.user || !req.user._id) {
-    return res.status(401).send({ message: 'User not authenticated' });
+    return res.status(UNAUTHORIZED).send({ message: ERROR_MESSAGES.UNAUTHORIZED });
   }
 
   if (!name || !weather || !imageUrl) {
-    return res.status(BAD_REQUEST).send({ message: 'All fields are required' });
+    return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_FIELDS });
   }
 
   if (!['hot', 'warm', 'cold'].includes(weather)) {
-    return res.status(BAD_REQUEST).send({ message: 'Invalid weather type' });
+    return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_WEATHER });
   }
 
   ClothingItem.create({ name, weather, imageUrl, owner: req.user._id, })
@@ -29,10 +31,9 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-
   ClothingItem.findByIdAndDelete(itemId)
   .orFail(() => {
-    const error = new Error('Item not found');
+    const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
     error.statusCode = NOT_FOUND;
     throw error;
   })
@@ -46,7 +47,7 @@ const likeItem = (req, res) => {
   { $addToSet: { likes: req.user._id } },
   { new: true },)
   .orFail(() => {
-    const error = new Error('Item not found');
+    const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
     error.statusCode = NOT_FOUND;
     throw error;
   })
@@ -59,7 +60,7 @@ const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
   { $pull: { likes: req.user._id } },
   { new: true, runValidators: true },)
   .orFail(() => {
-    const error = new Error('Item not found');
+    const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
     error.statusCode = NOT_FOUND;
     throw error;
   })
@@ -68,4 +69,3 @@ const dislikeItem = (req, res) => {ClothingItem.findByIdAndUpdate(
 };
 
 module.exports = { createItem, getItems, likeItem, dislikeItem, deleteItem};
-

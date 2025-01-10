@@ -6,22 +6,26 @@ GET http://localhost:3001/users HTTP/1.1
 
 ###
 
+
+GET http://localhost:3001/users/61eade4c6d5acf558c42d9b8  HTTP/1.1
+
+###
+
 POST http://localhost:3001/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "sample",
-    "avatar": "https://thisisnotvalidurl"
+    "name": "Test1",
+    "avatar": "https://example"
 }
 
 ###
-
 
 POST http://localhost:3001/items HTTP/1.1
 content-type: application/json
 
 {
-  "name": "Winter Jacket",
+  "name": "W",
   "weather": "cold",
   "imageUrl": "https://example.com/winter-jacket.jpg"
 }
@@ -29,7 +33,7 @@ content-type: application/json
 ###
 
 
-PUT http://localhost:3001/items/text/likes HTTP/1.1
+PUT http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes  HTTP/1.1
 content-type: application/json
 
 {
@@ -41,5 +45,12 @@ content-type: application/json
 ###
 
 
-DELETE http://localhost:3001/items/677d9694b053726e3ef5798e HTTP/1.1
+DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes  HTTP/1.1
+content-type: application/json
+
+
+###
+
+
+DELETE http://localhost:3001/items/61eade4c6d5acf558c42d9b8/likes HTTP/1.1
 content-type: application/json
