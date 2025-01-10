@@ -3,7 +3,7 @@ const { UNAUTHORIZED, ERROR_MESSAGES, JWT_SECRET } = require("../utils/config");
 const handleError = require("../utils/errors");
 
 
-module.exports = (req, res, next) => {
+const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startswith("Bearer ")) {
@@ -20,3 +20,5 @@ module.exports = (req, res, next) => {
     return handleError(err, res)
   };
 };
+
+module.exports = auth;
