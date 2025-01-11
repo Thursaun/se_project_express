@@ -1,10 +1,11 @@
-const ClothingItem = require("../models/clothingItem");
+const ClothingItemModel = require("../models/clothingItem");
 const {
   UNAUTHORIZED,
   ERROR_MESSAGES,
   BAD_REQUEST,
   NOT_FOUND,
-} = require("../utils/constants");
+  UNAUTHORIZED_ACTION,
+} = require("../utils/config");
 const handleError = require("../utils/errors");
 
 const createItem = (req, res) => {
@@ -28,31 +29,40 @@ const createItem = (req, res) => {
       .send({ message: ERROR_MESSAGES.INVALID_WEATHER });
   }
 
-  ClothingItem.create({ name, weather, imageUrl, owner: req.user._id })
+  ClothingItemModel.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => res.status(201).send({ data: item }))
     .catch((err) => handleError(err, res));
 };
 
 const getItems = (req, res) => {
-  ClothingItem.find({})
+  ClothingItemModel.find({})
     .then((items) => res.status(200).send({ data: items }))
     .catch((err) => handleError(err, res));
 };
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-  ClothingItem.findByIdAndDelete(itemId)
+
+  ClothingItemModel.findById(itemId)
     .orFail(() => {
       const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
       error.statusCode = NOT_FOUND;
       throw error;
+    })
+    .then((item) => {
+      if (!item.owner.equals(req.user._id)) {
+        const error = new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION);
+        error.statusCode = UNAUTHORIZED_ACTION;
+        throw error;
+      }
+      return item.deleteOne();
     })
     .then(() => res.status(200).send({ message: "Item deleted successfully" }))
     .catch((err) => handleError(err, res));
 };
 
 const likeItem = (req, res) => {
-  ClothingItem.findByIdAndUpdate(
+  ClothingItemModel.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
     { new: true }
@@ -67,7 +77,7 @@ const likeItem = (req, res) => {
 };
 
 const dislikeItem = (req, res) => {
-  ClothingItem.findByIdAndUpdate(
+  ClothingItemModel.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
     { new: true, runValidators: true }
