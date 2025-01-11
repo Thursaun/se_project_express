@@ -37,7 +37,7 @@ const createUser = (req, res) => {
 };
 
 const getCurrentUser = (req, res) => {
-  UserModel.findById(req.userId)
+  UserModel.findById(req.user._id)
     .orFail()
     .then((user) => res.status(200).send(user))
     .catch((err) => handleError(err, res));

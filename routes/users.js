@@ -4,10 +4,8 @@ const { getCurrentUser, updateUser } = require("../controllers/users");
 
 
 // Private Routes (Require User Authentication)
-router.use(auth);
-
-router.get("/me", getCurrentUser );
-router.patch("/me", updateUser )
+router.get("/me", auth, getCurrentUser );
+router.patch("/me", auth, updateUser )
 
 
 module.exports = router;

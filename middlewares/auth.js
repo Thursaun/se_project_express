@@ -6,7 +6,7 @@ const handleError = require("../utils/errors");
 const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (!authorization || !authorization.startswith("Bearer ")) {
+  if (!authorization || !authorization.startsWith("Bearer ")) {
     return res.status(UNAUTHORIZED).send({ message: ERROR_MESSAGES.UNAUTHORIZED});
   }
 

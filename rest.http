@@ -5,7 +5,7 @@ POST http://localhost:3001/signin HTTP/1.1
 content-type: application/json
 
 {
-    "email": "HarryPotter",
+    "email": "HarryPotter11@gmail.com",
     "password": "HedwigForever11"
 }
 
@@ -25,7 +25,7 @@ content-type: application/json
 
 ###
 
-GET http://localhost:3001/items HTTP/1.1
+GET http://localhost:3001/users/me HTTP/1.1
 
 ###
 
