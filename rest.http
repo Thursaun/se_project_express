@@ -57,7 +57,7 @@ content-type: application/json
 
 ###
 
-DELETE  http://localhost:3001/items/6782ead21264c78c779a51dd HTTP/1.1
+DELETE  http://localhost:3001/items/6782ee18a7911277a4826c98 HTTP/1.1
 Authorization: Bearer {{token}}
 content-type: application/json
 

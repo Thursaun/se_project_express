@@ -1,4 +1,4 @@
-const { BAD_REQUEST, NOT_FOUND, DEFAULT, ERROR_MESSAGES, CONFLICT, UNAUTHORIZED} = require('./config');
+const { BAD_REQUEST, NOT_FOUND, DEFAULT, ERROR_MESSAGES, CONFLICT, UNAUTHORIZED, UNAUTHORIZED_ACTION} = require('./config');
 
 const handleError = (err, res) => {
   console.error('Error:', err.name, '| Message:', err.message);
@@ -8,6 +8,9 @@ const handleError = (err, res) => {
   }
   if (err.message === "Incorrect email or password") {
     return res.status(UNAUTHORIZED).send ({ message: ERROR_MESSAGES.INVALID_LOGIN });
+  }
+  if (err.code === UNAUTHORIZED_ACTION) {
+    return res.status(UNAUTHORIZED_ACTION).send ({ message: ERROR_MESSAGES.UNAUTHORIZED_ACTION});
   }
   if (err.name === "ValidationError") {
     return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.VALIDATION_FAILED});
