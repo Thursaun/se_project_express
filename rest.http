@@ -1,14 +1,15 @@
 // Test for Sprint 13:
 
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgxYWU3MDcxYmIyZTE4ZjYwOTRiZGIiLCJpYXQiOjE3MzY2MzE5NTMsImV4cCI6MTczNzIzNjc1M30.Z9zV42FZZsKwh4ZSYyFu2qX7sLsqII_3Od8lsaWjvuM
+@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgyZTg1NjcyMDU5OTY4ZWYzODdhN2UiLCJpYXQiOjE3MzY2MzI0MzYsImV4cCI6MTczNzIzNzIzNn0.MZrdW67VK0DVyPHhf6lS2LcXDozZGta6QYraUS5-uSQ
 ###
 
 POST http://localhost:3001/signin HTTP/1.1
 content-type: application/json
 
 {
-    "email": "HarryPotter11@gmail.com",
-    "password": "HedwigForever11"
+    "email": "TTC@gmail.com",
+    "password": "Itsjustme"
 }
 
 
@@ -18,10 +19,10 @@ POST http://localhost:3001/signup HTTP/1.1
 content-type: application/json
 
 {
-    "email": "HarryPotter11@gmail.com",
-    "password": "HedwigRIP11",
-    "name": "Jessica Vanessa - The scammer",
-    "avatar": "https://example.com/babe"
+    "email": "TTC@gmail.com",
+    "password": "Itsjustme",
+    "name": "Thursaun",
+    "avatar": "https://example.com/me"
 }
 
 
@@ -45,7 +46,7 @@ content-type: application/json
 
 
 POST http://localhost:3001/items HTTP/1.1
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token2}}
 content-type: application/json
 
 {
@@ -56,7 +57,7 @@ content-type: application/json
 
 ###
 
-DELETE  http://localhost:3001/items/6782e6c44973586563d90a08 HTTP/1.1
+DELETE  http://localhost:3001/items/6782ead21264c78c779a51dd HTTP/1.1
 Authorization: Bearer {{token}}
 content-type: application/json
 

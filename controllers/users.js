@@ -45,7 +45,7 @@ const getCurrentUser = (req, res) => {
 
 const updateUser = (req, res) => {
   const { name, avatar } = req.body;
-  console.log("Update User here", req.body);
+
   UserModel.findByIdAndUpdate(
     req.user._id,
     { name, avatar },

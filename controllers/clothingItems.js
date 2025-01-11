@@ -42,6 +42,7 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
+
   ClothingItemModel.findById(itemId)
     .orFail(() => {
       const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
@@ -49,7 +50,7 @@ const deleteItem = (req, res) => {
       throw error;
     })
     .then((item) => {
-      if (!item.owner === req.user._id) {
+      if (item.owner !== req.user._id) {
         const error = new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION);
         error.statusCode = UNAUTHORIZED_ACTION;
         throw error;
