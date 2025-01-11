@@ -1,4 +1,6 @@
+// Test for Sprint 13:
 
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgxYWU3MDcxYmIyZTE4ZjYwOTRiZGIiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MzY2Mjg4MjMsImV4cCI6MTczNzIzMzYyM30.DDkpvFb2iobXf0a7RWJ3xLkUMSE-W-qoIj9kBK_fitc
 ###
 
 POST http://localhost:3001/signin HTTP/1.1
@@ -26,6 +28,18 @@ content-type: application/json
 ###
 
 GET http://localhost:3001/users/me HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+PATCH  http://localhost:3001/users/me HTTP/1.1
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+    "name": "Jessica Vanessa - The scammer",
+    "avatar": "https://example.com/scam"
+}
 
 ###
 
@@ -33,6 +47,8 @@ GET http://localhost:3001/users/me HTTP/1.1
 
 ###
 
+
+// Test for Sprint 12:
 
 GET http://localhost:3001/users/6780473a86ae15c067f8584b  HTTP/1.1
 
@@ -51,10 +67,11 @@ content-type: application/json
 ###
 
 POST http://localhost:3001/items HTTP/1.1
+
 content-type: application/json
 
 {
-  "name": "W",
+  "name": "Winter Jacket",
   "weather": "cold",
   "imageUrl": "https://example.com/winter-jacket.jpg"
 }
