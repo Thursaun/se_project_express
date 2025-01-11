@@ -9,7 +9,7 @@ const handleError = (err, res) => {
   if (err.message === "Incorrect email or password") {
     return res.status(UNAUTHORIZED).send ({ message: ERROR_MESSAGES.INVALID_LOGIN });
   }
-  if (err.code === UNAUTHORIZED_ACTION) {
+  if (err.message === "You are not authoized to delete this item") {
     return res.status(UNAUTHORIZED_ACTION).send ({ message: ERROR_MESSAGES.UNAUTHORIZED_ACTION});
   }
   if (err.name === "ValidationError") {
