@@ -17,9 +17,6 @@ const createUser = (req, res) => {
     return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_FIELDS});
   }
 
-  console.log("Signup request body:", req.body);
-  console.log("Checking if user exists:", email);
-
   UserModel.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {

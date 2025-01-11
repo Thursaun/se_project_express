@@ -21,8 +21,8 @@ const ERROR_MESSAGES = {
   ITEM_NOT_FOUND: 'Item not found',
   USER_NOT_FOUND: 'User not found',
   INVALID_ID_FORMAT: 'Invalid ID format',
-  INTERNAL_SERVER_ERROR: 'Internal server error',
+  INTERNAL_SERVER_ERROR: 'Default - Internal server error',
   VALIDATION_FAILED: 'Validation failed. Check input fields.',
 };
 
-module.exports = { BAD_REQUEST, UNAUTHORIZED, NOT_FOUND, DEFAULT, CONFLICT, ERROR_MESSAGES, JWT_SECRET };
+module.exports = { BAD_REQUEST, UNAUTHORIZED, UNAUTHORIZED_ACTION, NOT_FOUND, DEFAULT, CONFLICT, ERROR_MESSAGES, JWT_SECRET };

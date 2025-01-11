@@ -1,22 +1,12 @@
 
-POST http://localhost:3001/signup HTTP/1.1
-content-type: application/json
-
-{
-  "email": "HarryPotter11",
-  "password": "HedwigForever11",
-  "name": "Jessica Vanessa",
-  "avatar": "https://example.com/babe",
-}
-
-
 ###
 
 POST http://localhost:3001/signin HTTP/1.1
+content-type: application/json
 
 {
-  "email": "HarryPotter@gmail.com",
-  "password": "HedwigForever",
+    "email": "HarryPotter",
+    "password": "HedwigForever11"
 }
 
 
