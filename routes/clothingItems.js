@@ -7,11 +7,9 @@ const {createItem, getItems, deleteItem, likeItem, dislikeItem} = require('../co
 router.get('/', getItems);
 
 // Private Routes (Require User Authentication)
-router.use(auth);
-
-router.post('/', createItem);
-router.delete('/:itemId', deleteItem);
-router.put('/:itemId/likes', likeItem);
-router.delete('/:itemId/likes', dislikeItem);
+router.post('/', auth, createItem);
+router.delete('/:itemId', auth, deleteItem);
+router.put('/:itemId/likes', auth, likeItem);
+router.delete('/:itemId/likes', auth, dislikeItem);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 // Test for Sprint 13:
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgxYWU3MDcxYmIyZTE4ZjYwOTRiZGIiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE3MzY2Mjg4MjMsImV4cCI6MTczNzIzMzYyM30.DDkpvFb2iobXf0a7RWJ3xLkUMSE-W-qoIj9kBK_fitc
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgxYWU3MDcxYmIyZTE4ZjYwOTRiZGIiLCJpYXQiOjE3MzY2MzE5NTMsImV4cCI6MTczNzIzNjc1M30.Z9zV42FZZsKwh4ZSYyFu2qX7sLsqII_3Od8lsaWjvuM
 ###
 
 POST http://localhost:3001/signin HTTP/1.1
@@ -43,12 +43,33 @@ content-type: application/json
 
 ###
 
-GET http://localhost:3001/users/me HTTP/1.1
+
+POST http://localhost:3001/items HTTP/1.1
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "Winter Jacket",
+  "weather": "cold",
+  "imageUrl": "https://example.com/winter-jacket.jpg"
+}
+
+###
+
+DELETE  http://localhost:3001/items/6782e6c44973586563d90a08 HTTP/1.1
+Authorization: Bearer {{token}}
+content-type: application/json
 
 ###
 
 
 // Test for Sprint 12:
+
+
+GET http://localhost:3001/users/me HTTP/1.1
+
+###
+
 
 GET http://localhost:3001/users/6780473a86ae15c067f8584b  HTTP/1.1
 

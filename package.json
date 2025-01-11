@@ -2,6 +2,10 @@
   "name": "se_project_express",
   "version": "1.0.0",
   "main": "app.js",
+  "exports": {
+    ".": "./app.js"
+  },
+  "type": "commonjs",
   "scripts": {
     "lint": "npx eslint .",
     "start": "node app.js",

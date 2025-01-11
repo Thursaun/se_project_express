@@ -4,6 +4,7 @@ const {
   ERROR_MESSAGES,
   BAD_REQUEST,
   NOT_FOUND,
+  UNAUTHORIZED_ACTION,
 } = require("../utils/config");
 const handleError = require("../utils/errors");
 
@@ -41,19 +42,19 @@ const getItems = (req, res) => {
 
 const deleteItem = (req, res) => {
   const { itemId } = req.params;
-  ClothingItemModel.findByIdAndDelete(itemId)
+  ClothingItemModel.findById(itemId)
     .orFail(() => {
       const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
       error.statusCode = NOT_FOUND;
       throw error;
     })
     .then((item) => {
-      if (item.owner !== req.user._id) {
+      if (!item.owner === req.user._id) {
         const error = new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION);
+        error.statusCode = UNAUTHORIZED_ACTION;
         throw error;
       }
-
-      return ClothingItemModel.findByIdAndDelete(itemId);
+      return item.deleteOne();
     })
     .then(() => res.status(200).send({ message: "Item deleted successfully" }))
     .catch((err) => handleError(err, res));
