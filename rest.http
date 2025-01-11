@@ -3,7 +3,7 @@ POST http://localhost:3001/signup HTTP/1.1
 content-type: application/json
 
 {
-  "email": "HarryPotter11@gmail.com",
+  "email": "HarryPotter11",
   "password": "HedwigForever11",
   "name": "Jessica Vanessa",
   "avatar": "https://example.com/babe",

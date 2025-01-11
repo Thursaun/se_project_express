@@ -1,7 +1,7 @@
 const UserModel = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { BAD_REQUEST, ERROR_MESSAGES, JWT_SECRET } = require("../utils/config");
+const { BAD_REQUEST, ERROR_MESSAGES, JWT_SECRET, CONFLICT } = require("../utils/config");
 const handleError = require("../utils/errors");
 
 const getUsers = (req, res) => {
@@ -17,12 +17,25 @@ const createUser = (req, res) => {
     return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_FIELDS});
   }
 
-  bcrypt
-    .hash(password, 8)
-    .then((hashedPassword) =>
-      UserModel.create({ name, avatar, email, password: hashedPassword })
-    )
-    .then((user) => res.status(201).send(user))
+  console.log("Signup request body:", req.body);
+  console.log("Checking if user exists:", email);
+
+  UserModel.findOne({ email })
+    .then((existingUser) => {
+      if (existingUser) {
+        return res.status(CONFLICT).send({message: ERROR_MESSAGES.CONFLICT });
+      }
+
+      return bcrypt
+        .hash(password, 8)
+        .then((hashedPassword) =>
+          UserModel.create({ name, avatar, email, password: hashedPassword })
+        )
+        .then((user) => {
+          const userWithoutPassword = user.toObject();
+          delete userWithoutPassword.password;
+          res.status(201).send(userWithoutPassword)});
+    })
     .catch((err) => handleError(err, res));
 };
 
