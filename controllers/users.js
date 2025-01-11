@@ -13,6 +13,10 @@ const getUsers = (req, res) => {
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
+  if (!name || !avatar || !email || !password) {
+    return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_FIELDS});
+  }
+
   bcrypt
     .hash(password, 8)
     .then((hashedPassword) =>

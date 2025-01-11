@@ -1,14 +1,37 @@
 
-GET http://localhost:3001/signup HTTP/1.1
+POST http://localhost:3001/signup HTTP/1.1
+content-type: application/json
+
+{
+  "email": "HarryPotter11@gmail.com",
+  "password": "HedwigForever11",
+  "name": "Jessica Vanessa",
+  "avatar": "https://example.com/babe",
+}
+
 
 ###
 
-GET http://localhost:3001/signin HTTP/1.1
+POST http://localhost:3001/signin HTTP/1.1
 
 {
-    "email": "HarryPotter@gmail.com",
-    "password": "HedwigForever",
+  "email": "HarryPotter@gmail.com",
+  "password": "HedwigForever",
 }
+
+
+###
+
+POST http://localhost:3001/signup HTTP/1.1
+content-type: application/json
+
+{
+    "email": "HarryPotter11@gmail.com",
+    "password": "HedwigRIP11",
+    "name": "Jessica Vanessa - The scammer",
+    "avatar": "https://example.com/babe"
+}
+
 
 ###
 
@@ -16,7 +39,7 @@ GET http://localhost:3001/items HTTP/1.1
 
 ###
 
-GET http://localhost:3001/users HTTP/1.1
+GET http://localhost:3001/users/me HTTP/1.1
 
 ###
 
@@ -29,10 +52,10 @@ POST http://localhost:3001/users HTTP/1.1
 content-type: application/json
 
 {
-    "name": "Jessica Vanessa",
-    "avatar": "https://example.com/pops",
-    "email": "HarryPotter@gmail.com",
-    "password": "HedwigForever",
+  "name": "Jessica Vanessa",
+  "avatar": "https://example.com/pops",
+  "email": "HarryPotter@gmail.com",
+  "password": "HedwigForever",
 }
 
 ###
@@ -57,16 +80,3 @@ content-type: application/json
   "weather": "cold",
   "imageUrl": "https://example.com/winter-jacket.jpg"
 }
-
-###
-
-
-DELETE http://localhost:3001/items/6780077d1b3577d09ec7d4d2/likes  HTTP/1.1
-content-type: application/json
-
-
-###
-
-
-DELETE http://localhost:3001/items/67803d3186ae15c067f85840/ HTTP/1.1
-content-type: application/json

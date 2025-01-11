@@ -15,10 +15,11 @@ mongoose
   .catch((err) => console.error('Database connection error:', err));
 
 app.use(cors());
-
 app.use(express.json());
 
 app.use("/", mainRouter);
+
+
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
