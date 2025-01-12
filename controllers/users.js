@@ -4,12 +4,6 @@ const UserModel = require("../models/user");
 const { BAD_REQUEST, ERROR_MESSAGES, JWT_SECRET, CONFLICT } = require("../utils/config");
 const handleError = require("../utils/errors");
 
-const getUsers = (req, res) => {
-  UserModel.find({})
-    .then((users) => res.status(200).send(users))
-    .catch((err) => handleError(err, res));
-};
-
 const createUser = (req, res) => {
   const { name, avatar, email, password } = req.body;
 
@@ -39,7 +33,7 @@ const createUser = (req, res) => {
 const getCurrentUser = (req, res) => {
   UserModel.findById(req.user._id)
     .orFail()
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.send(user))
     .catch((err) => handleError(err, res));
 };
 
@@ -51,7 +45,7 @@ const updateUser = (req, res) => {
     { name, avatar },
     { new: true, runValidators: true }
   )
-    .then((user) => res.status(200).send(user))
+    .then((user) => res.send(user))
     .catch((err) => handleError(err, res));
 };
 
@@ -69,9 +63,9 @@ const login = (req, res) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
         expiresIn: "7d",
       });
-      res.status(200).send({ token });
+      res.send({ token });
     })
     .catch((err) => handleError(err, res));
 };
 
-module.exports = { getUsers, createUser, getCurrentUser, updateUser, login };
+module.exports = { createUser, getCurrentUser, updateUser, login };

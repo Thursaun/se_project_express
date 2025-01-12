@@ -1,4 +1,5 @@
-const cors = require("cors");
+const cors = require('cors');
+const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
 const mainRouter =require("./routes/index");
@@ -16,6 +17,7 @@ mongoose
   .catch((err) => console.error('Database connection error:', err));
 
 app.use(cors());
+app.use(helmet());
 app.use(express.json());
 
 app.use("/", mainRouter);
