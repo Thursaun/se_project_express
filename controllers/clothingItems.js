@@ -36,7 +36,7 @@ const createItem = (req, res) => {
 
 const getItems = (req, res) => {
   ClothingItemModel.find({})
-    .then((items) => res.status(200).send({ data: items }))
+    .then((items) => res.status(200).send(items))
     .catch((err) => handleError(err, res));
 };
 
@@ -72,7 +72,7 @@ const likeItem = (req, res) => {
       error.statusCode = NOT_FOUND;
       throw error;
     })
-    .then((item) => res.send({ data: item }))
+    .then((item) => res.send(item))
     .catch((err) => handleError(err, res));
 };
 
@@ -87,7 +87,7 @@ const dislikeItem = (req, res) => {
       error.statusCode = NOT_FOUND;
       throw error;
     })
-    .then((item) => res.send({ data: item }))
+    .then((item) => res.send(item))
     .catch((err) => handleError(err, res));
 };
 
