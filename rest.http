@@ -1,15 +1,15 @@
 // Test for Sprint 13:
 
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgxYWU3MDcxYmIyZTE4ZjYwOTRiZGIiLCJpYXQiOjE3MzY2MzE5NTMsImV4cCI6MTczNzIzNjc1M30.Z9zV42FZZsKwh4ZSYyFu2qX7sLsqII_3Od8lsaWjvuM
-@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzgyZTg1NjcyMDU5OTY4ZWYzODdhN2UiLCJpYXQiOjE3MzY2MzI0MzYsImV4cCI6MTczNzIzNzIzNn0.MZrdW67VK0DVyPHhf6lS2LcXDozZGta6QYraUS5-uSQ
+@token2 = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzkwNDZjMDhjNTc4NGU4ZjVkMWM1ZDMiLCJpYXQiOjE3Mzc3NTU4MjQsImV4cCI6MTczODM2MDYyNH0.QSsh7pPbYf4OJpkxyPkPypx9yFQEtjch-niOpGhHj-Y
 ###
 
 POST http://localhost:3001/signin HTTP/1.1
 content-type: application/json
 
 {
-    "email": "TTC@gmail.com",
-    "password": "Itsjustme"
+    "email": "Test@test.com",
+    "password": "Test1234"
 }
 
 
