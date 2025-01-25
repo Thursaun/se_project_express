@@ -30,7 +30,7 @@ const createItem = (req, res) => {
   }
 
   ClothingItemModel.create({ name, weather, imageUrl, owner: req.user._id })
-    .then((item) => res.status(201).send({ data: item }))
+    .then((item) => res.status(201).send(item))
     .catch((err) => handleError(err, res));
 };
 
