@@ -1,5 +1,7 @@
+require('dotenv').config();
+
 // JWT Token (Secet)
-const JWT_SECRET = 'The boy who lived';
+const { JWT_SECRET = 'The boy who lived' } = process.env;
 
 // HTTP Status Codes
 const BAD_REQUEST = 400;

@@ -6,89 +6,88 @@ const {
   NOT_FOUND,
   UNAUTHORIZED_ACTION,
 } = require("../utils/config");
-const handleError = require("../utils/errors");
 
-const createItem = (req, res) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!req.user || !req.user._id) {
-    return res
-      .status(UNAUTHORIZED)
-      .send({ message: ERROR_MESSAGES.UNAUTHORIZED });
+    const err = new Error(ERROR_MESSAGES.UNAUTHORIZED);
+    err.statusCode = UNAUTHORIZED;
+    return next(err);
   }
 
   if (!name || !weather || !imageUrl) {
-    return res
-      .status(BAD_REQUEST)
-      .send({ message: ERROR_MESSAGES.INVALID_FIELDS });
+    const err = new Error(ERROR_MESSAGES.INVALID_FIELDS);
+    err.statusCode = BAD_REQUEST;
+    return next(err);
   }
 
   if (!["hot", "warm", "cold"].includes(weather)) {
-    return res
-      .status(BAD_REQUEST)
-      .send({ message: ERROR_MESSAGES.INVALID_WEATHER });
+    const err = new Error(ERROR_MESSAGES.INVALID_WEATHER);
+    err.statusCode = BAD_REQUEST;
+    return next(err);
   }
 
   ClothingItemModel.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => res.status(201).send(item))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const getItems = (req, res) => {
+const getItems = (req, res, next) => {
   ClothingItemModel.find({})
     .then((items) => res.status(200).send(items))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const deleteItem = (req, res) => {
+const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItemModel.findById(itemId)
     .orFail(() => {
-      const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
-      error.statusCode = NOT_FOUND;
-      throw error;
+      const err = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
+      err.statusCode = NOT_FOUND;
+      throw err;
     })
     .then((item) => {
       if (!item.owner.equals(req.user._id)) {
-        const error = new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION);
-        error.statusCode = UNAUTHORIZED_ACTION;
-        throw error;
+        const err = new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION);
+        err.statusCode = UNAUTHORIZED_ACTION;
+        throw err;
       }
       return item.deleteOne();
     })
     .then(() => res.send({ message: "Item deleted successfully" }))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const likeItem = (req, res) => {
+const likeItem = (req, res, next) => {
   ClothingItemModel.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
     .orFail(() => {
-      const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
-      error.statusCode = NOT_FOUND;
-      throw error;
+      const err = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
+      err.statusCode = NOT_FOUND;
+      throw err;
     })
     .then((item) => res.send(item))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const dislikeItem = (req, res) => {
+const dislikeItem = (req, res, next) => {
   ClothingItemModel.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
     { new: true, runValidators: true }
   )
     .orFail(() => {
-      const error = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
-      error.statusCode = NOT_FOUND;
-      throw error;
+      const err = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
+      err.statusCode = NOT_FOUND;
+      throw err;
     })
     .then((item) => res.send(item))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
 module.exports = { createItem, getItems, likeItem, dislikeItem, deleteItem };

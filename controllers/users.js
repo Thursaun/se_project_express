@@ -2,19 +2,23 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user");
 const { BAD_REQUEST, ERROR_MESSAGES, JWT_SECRET, CONFLICT } = require("../utils/config");
-const handleError = require("../utils/errors");
 
-const createUser = (req, res) => {
+
+const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   if (!name || !avatar || !email || !password) {
-    return res.status(BAD_REQUEST).send({ message: ERROR_MESSAGES.INVALID_FIELDS});
+    const err = new Error(ERROR_MESSAGES.INVALID_FIELDS);
+    err.statusCode = BAD_REQUEST;
+    return next(err);
   }
 
   UserModel.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
-        return res.status(CONFLICT).send({message: ERROR_MESSAGES.CONFLICT });
+        const err = new Error(ERROR_MESSAGES.CONFLICT);
+        err.statusCode = CONFLICT;
+        return next(err);
       }
 
       return bcrypt
@@ -27,17 +31,17 @@ const createUser = (req, res) => {
           delete userWithoutPassword.password;
           res.status(201).send(userWithoutPassword)});
     })
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const getCurrentUser = (req, res) => {
+const getCurrentUser = (req, res, next) => {
   UserModel.findById(req.user._id)
     .orFail()
     .then((user) => res.send(user))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const updateUser = (req, res) => {
+const updateUser = (req, res, next) => {
   const { name, avatar } = req.body;
 
   UserModel.findByIdAndUpdate(
@@ -46,16 +50,16 @@ const updateUser = (req, res) => {
     { new: true, runValidators: true }
   )
     .then((user) => res.send(user))
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
-const login = (req, res) => {
+const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(BAD_REQUEST)
-      .send({ message: ERROR_MESSAGES.INVALID_LOGIN });
+    const err = new Error(ERROR_MESSAGES.INVALID_LOGIN);
+    err.statusCode = BAD_REQUEST;
+    return next(err);
   }
 
   UserModel.findUserByCredentials(email, password)
@@ -65,7 +69,7 @@ const login = (req, res) => {
       });
       res.send({ token });
     })
-    .catch((err) => handleError(err, res));
+    .catch(next);
 };
 
 module.exports = { createUser, getCurrentUser, updateUser, login };

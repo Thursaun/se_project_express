@@ -3,16 +3,19 @@ const {NOT_FOUND, ERROR_MESSAGES} = require('../utils/config');
 const { createUser, login } = require("../controllers/users");
 const userRouter = require("./users");
 const itemRouter = require("./clothingItems");
+const { validateUserCreation, validateUserLogin } = require("../middlewares/validation");
 
 // Public Routes (No Authentication Required)
-router.post("/signup", createUser);
-router.post("/signin", login);
+router.post("/signup", validateUserCreation, createUser);
+router.post("/signin", validateUserLogin, login);
 
 router.use("/users", userRouter);
 router.use("/items", itemRouter);
 
-router.use((req, res,) => {
-  res.status(NOT_FOUND).send({message: ERROR_MESSAGES.USER_NOT_FOUND})
+router.use((req, res, next) => {
+  const err = new Error(ERROR_MESSAGES.USER_NOT_FOUND);
+  err.statusCode = NOT_FOUND;
+  next(err);
 });
 
 

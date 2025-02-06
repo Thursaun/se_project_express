@@ -6,7 +6,9 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith("Bearer ")) {
-    return res.status(UNAUTHORIZED).send({ message: ERROR_MESSAGES.UNAUTHORIZED});
+    const err = new Error(ERROR_MESSAGES.UNAUTHORIZED);
+    err.statusCode = UNAUTHORIZED;
+    return next(err);
   }
 
   const token = authorization.replace("Bearer ", "");
@@ -16,7 +18,8 @@ const auth = (req, res, next) => {
     req.user = payload;
     next();
   } catch (err) {
-    return res.status(UNAUTHORIZED).send({ message: ERROR_MESSAGES.UNAUTHORIZED});
+    err.statusCode = UNAUTHORIZED;
+    return next(err);
   };
 };
 
