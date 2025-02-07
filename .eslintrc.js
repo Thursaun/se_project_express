@@ -25,6 +25,6 @@ module.exports = {
     'no-underscore-dangle': [ 'error', {allow: ['_id'] }],
     'consistent-return': 'off',
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.spec.js"]}],
-    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
   },
 };
