@@ -1,24 +1,21 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user");
-const { BAD_REQUEST, ERROR_MESSAGES, JWT_SECRET, CONFLICT } = require("../utils/config");
+const { ERROR_MESSAGES, JWT_SECRET } = require("../utils/config");
+const { BadRequestError, ConflictError, ForbiddenError } = require("../utils/customerror");
 
 
 const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   if (!name || !avatar || !email || !password) {
-    const err = new Error(ERROR_MESSAGES.INVALID_FIELDS);
-    err.statusCode = BAD_REQUEST;
-    return next(err);
+    return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
   }
 
   UserModel.findOne({ email })
     .then((existingUser) => {
       if (existingUser) {
-        const err = new Error(ERROR_MESSAGES.CONFLICT);
-        err.statusCode = CONFLICT;
-        return next(err);
+        return next(new ConflictError(ERROR_MESSAGES.CONFLICT));
       }
 
       return bcrypt
@@ -36,7 +33,7 @@ const createUser = (req, res, next) => {
 
 const getCurrentUser = (req, res, next) => {
   UserModel.findById(req.user._id)
-    .orFail()
+    .orFail(() => new ForbiddenError(ERROR_MESSAGES.USER_NOT_FOUND))
     .then((user) => res.send(user))
     .catch(next);
 };
@@ -57,9 +54,7 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    const err = new Error(ERROR_MESSAGES.INVALID_LOGIN);
-    err.statusCode = BAD_REQUEST;
-    return next(err);
+    return next(new BadRequestError(ERROR_MESSAGES.INVALID_LOGIN));
   }
 
   UserModel.findUserByCredentials(email, password)

@@ -26,5 +26,6 @@ module.exports = {
     'consistent-return': 'off',
     "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.spec.js"]}],
     "no-unused-vars": ["error", { "argsIgnorePattern": "next" }],
+    "max-classes-per-file": "off",
   },
 };
