@@ -3,11 +3,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const express = require('express');
 const mongoose = require('mongoose');
-const mainRouter = require("./routes/index");
 const { errors } = require('celebrate');
+const { errorLogger } = require('express-winston');
+const mainRouter = require("./routes/index");
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger } = require('./middlewares/logger');
-const { errorLogger } = require('express-winston');
+const limiter = require('./middlewares/ratelimiter');
+
 
 
 
@@ -27,6 +29,7 @@ app.use(cors());
 app.use(helmet());
 app.use(express.json());
 app.use(requestLogger);
+app.use(limiter);
 
 app.get('/crash-test', () => {
   setTimeout(() => {

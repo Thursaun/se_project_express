@@ -1,31 +1,20 @@
 const ClothingItemModel = require("../models/clothingItem");
-const {
-  UNAUTHORIZED,
-  ERROR_MESSAGES,
-  BAD_REQUEST,
-  NOT_FOUND,
-  UNAUTHORIZED_ACTION,
-} = require("../utils/config");
+const { ERROR_MESSAGES } = require("../utils/config");
+const { UnauthorizedError, BadRequestError, NotFoundError, ForbiddenError } = require("../utils/customerror");
 
 const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!req.user || !req.user._id) {
-    const err = new Error(ERROR_MESSAGES.UNAUTHORIZED);
-    err.statusCode = UNAUTHORIZED;
-    return next(err);
+    return next(new UnauthorizedError(ERROR_MESSAGES.UNAUTHORIZED));
   }
 
   if (!name || !weather || !imageUrl) {
-    const err = new Error(ERROR_MESSAGES.INVALID_FIELDS);
-    err.statusCode = BAD_REQUEST;
-    return next(err);
+    return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
   }
 
   if (!["hot", "warm", "cold"].includes(weather)) {
-    const err = new Error(ERROR_MESSAGES.INVALID_WEATHER);
-    err.statusCode = BAD_REQUEST;
-    return next(err);
+    return next(new BadRequestError(ERROR_MESSAGES.INVALID_WEATHER));
   }
 
   ClothingItemModel.create({ name, weather, imageUrl, owner: req.user._id })
@@ -43,16 +32,10 @@ const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
 
   ClothingItemModel.findById(itemId)
-    .orFail(() => {
-      const err = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
-      err.statusCode = NOT_FOUND;
-      throw err;
-    })
+    .orFail(() => new NotFoundError(ERROR_MESSAGES.ITEM_NOT_FOUND))
     .then((item) => {
       if (!item.owner.equals(req.user._id)) {
-        const err = new Error(ERROR_MESSAGES.UNAUTHORIZED_ACTION);
-        err.statusCode = UNAUTHORIZED_ACTION;
-        throw err;
+        return next(new ForbiddenError(ERROR_MESSAGES.UNAUTHORIZED_ACTION));
       }
       return item.deleteOne();
     })
@@ -66,11 +49,7 @@ const likeItem = (req, res, next) => {
     { $addToSet: { likes: req.user._id } },
     { new: true }
   )
-    .orFail(() => {
-      const err = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
-      err.statusCode = NOT_FOUND;
-      throw err;
-    })
+    .orFail(() => new NotFoundError(ERROR_MESSAGES.ITEM_NOT_FOUND))
     .then((item) => res.send(item))
     .catch(next);
 };
@@ -81,11 +60,7 @@ const dislikeItem = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true, runValidators: true }
   )
-    .orFail(() => {
-      const err = new Error(ERROR_MESSAGES.ITEM_NOT_FOUND);
-      err.statusCode = NOT_FOUND;
-      throw err;
-    })
+    .orFail(() => new NotFoundError(ERROR_MESSAGES.ITEM_NOT_FOUND))
     .then((item) => res.send(item))
     .catch(next);
 };
