@@ -1,13 +1,11 @@
 const ClothingItemModel = require("../models/clothingItem");
 const { ERROR_MESSAGES } = require("../utils/config");
-const { UnauthorizedError, BadRequestError, NotFoundError, ForbiddenError } = require("../utils/customerror");
+const { BadRequestError } = require("../utils/badrequesterror");
+const { ForbiddenError } = require("../utils/forbiddenerror");
+const { NotFoundError } = require("../utils/notfounderror");
 
-const createItem = (req, res, next) => {
+const createItem = (err, req, res, next) => {
   const { name, weather, imageUrl } = req.body;
-
-  if (!req.user || !req.user._id) {
-    return next(new UnauthorizedError(ERROR_MESSAGES.UNAUTHORIZED));
-  }
 
   if (!name || !weather || !imageUrl) {
     return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
@@ -16,6 +14,12 @@ const createItem = (req, res, next) => {
   if (!["hot", "warm", "cold"].includes(weather)) {
     return next(new BadRequestError(ERROR_MESSAGES.INVALID_WEATHER));
   }
+
+  if (err.name === "ValidationError") {
+    next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
+   } else {
+     next(err);
+    }
 
   ClothingItemModel.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => res.status(201).send(item))

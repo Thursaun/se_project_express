@@ -2,15 +2,22 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user");
 const { ERROR_MESSAGES, JWT_SECRET } = require("../utils/config");
-const { BadRequestError, ConflictError, ForbiddenError } = require("../utils/customerror");
+const { BadRequestError } = require("../utils/badrequesterror");
+const { ConflictError } = require("../utils/conflicterror");
+const { NotFoundError } = require("../utils/notfounderror");
 
-
-const createUser = (req, res, next) => {
+const createUser = (err, req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   if (!name || !avatar || !email || !password) {
     return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
   }
+
+  if (err.name === "ValidationError") {
+    next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
+   } else {
+     next(err);
+   }
 
   UserModel.findOne({ email })
     .then((existingUser) => {
@@ -33,13 +40,18 @@ const createUser = (req, res, next) => {
 
 const getCurrentUser = (req, res, next) => {
   UserModel.findById(req.user._id)
-    .orFail(() => new ForbiddenError(ERROR_MESSAGES.USER_NOT_FOUND))
+    .orFail(() => new NotFoundError(ERROR_MESSAGES.USER_NOT_FOUND))
     .then((user) => res.send(user))
     .catch(next);
 };
 
-const updateUser = (req, res, next) => {
+const updateUser = (err, req, res, next) => {
   const { name, avatar } = req.body;
+  if (err.name === "ValidationError") {
+    next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
+   } else {
+     next(err);
+   }
 
   UserModel.findByIdAndUpdate(
     req.user._id,
