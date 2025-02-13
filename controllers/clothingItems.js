@@ -4,7 +4,7 @@ const { BadRequestError } = require("../utils/badrequesterror");
 const { ForbiddenError } = require("../utils/forbiddenerror");
 const { NotFoundError } = require("../utils/notfounderror");
 
-const createItem = (err, req, res, next) => {
+const createItem = (req, res, next) => {
   const { name, weather, imageUrl } = req.body;
 
   if (!name || !weather || !imageUrl) {
@@ -15,15 +15,14 @@ const createItem = (err, req, res, next) => {
     return next(new BadRequestError(ERROR_MESSAGES.INVALID_WEATHER));
   }
 
-  if (err.name === "ValidationError") {
-    next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
-   } else {
-     next(err);
-    }
-
   ClothingItemModel.create({ name, weather, imageUrl, owner: req.user._id })
     .then((item) => res.status(201).send(item))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
+      }
+      next(err);
+    });
 };
 
 const getItems = (req, res, next) => {
