@@ -6,18 +6,12 @@ const { BadRequestError } = require("../utils/badrequesterror");
 const { ConflictError } = require("../utils/conflicterror");
 const { NotFoundError } = require("../utils/notfounderror");
 
-const createUser = (err, req, res, next) => {
+const createUser = (req, res, next) => {
   const { name, avatar, email, password } = req.body;
 
   if (!name || !avatar || !email || !password) {
     return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
   }
-
-  if (err.name === "ValidationError") {
-    next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
-   } else {
-     next(err);
-   }
 
   UserModel.findOne({ email })
     .then((existingUser) => {
@@ -35,7 +29,12 @@ const createUser = (err, req, res, next) => {
           delete userWithoutPassword.password;
           res.status(201).send(userWithoutPassword)});
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
+      }
+      next(err);
+    });
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -45,13 +44,8 @@ const getCurrentUser = (req, res, next) => {
     .catch(next);
 };
 
-const updateUser = (err, req, res, next) => {
+const updateUser = (req, res, next) => {
   const { name, avatar } = req.body;
-  if (err.name === "ValidationError") {
-    next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
-   } else {
-     next(err);
-   }
 
   UserModel.findByIdAndUpdate(
     req.user._id,
@@ -59,7 +53,12 @@ const updateUser = (err, req, res, next) => {
     { new: true, runValidators: true }
   )
     .then((user) => res.send(user))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        return next(new BadRequestError(ERROR_MESSAGES.INVALID_FIELDS));
+      }
+      next(err);
+    });
 };
 
 const login = (req, res, next) => {
